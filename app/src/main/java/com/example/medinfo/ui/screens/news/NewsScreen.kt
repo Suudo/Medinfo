@@ -21,7 +21,6 @@ fun NewsScreen(navigator: DestinationsNavigator) {
 @Composable
 fun NewsContent() {
     LazyColumn(
-
         modifier = Modifier.fillMaxWidth()
     ) {
 

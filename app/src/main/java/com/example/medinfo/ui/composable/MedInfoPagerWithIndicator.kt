@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -19,25 +18,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.medinfo.R
 import com.example.medinfo.ui.theme.textStyle14
 import com.example.medinfo.ui.theme.textStyle20
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -58,15 +49,9 @@ fun MedInfoPagerWithIndicator(
             state = pagerState,
             pageContent = { HeaderPagerItem(items[it]) }
         )
-        HorizontalPagerIndicator(
-            pageCount = items.size,
-            pagerState = pagerState,
-            indicatorHeight = 2.dp,
-            indicatorWidth = 10.dp,
-            indicatorShape = RoundedCornerShape(20.dp),
-            spacing = 3.dp,
-            activeColor = Color(0xFF028FF6),
-            inactiveColor = Color.White,
+        MedInfoPagerIndicator(
+            totalPages = items.size,
+            currentPage = pagerState.currentPage,
             modifier = Modifier.padding(bottom = 16.dp).align(Alignment.BottomCenter)
         )
     }
@@ -86,7 +71,9 @@ fun HeaderImage(image: Int) {
         painter = painterResource(id = image),
         contentDescription = "",
         contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxWidth().height(175.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(175.dp)
     )
 }
 
@@ -133,13 +120,11 @@ fun Modifier.headerButton() =
             shape = RoundedCornerShape(6.dp)
         )
 
-
 enum class HeaderInfo(val image: Int) {
     FIRST(R.drawable.ic_slider_1),
     SECOND(R.drawable.ic_slider_1),
     THIRD(R.drawable.ic_slider_1)
 }
-
 
 @Preview
 @Composable
