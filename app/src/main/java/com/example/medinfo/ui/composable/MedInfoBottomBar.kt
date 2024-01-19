@@ -1,31 +1,16 @@
 package com.example.medinfo.ui.composable
 
-import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.twotone.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptionsBuilder
 import com.example.medinfo.R
 import com.example.medinfo.ui.screens.NavGraphs
 import com.example.medinfo.ui.screens.appCurrentDestinationAsState
@@ -38,7 +23,6 @@ import com.example.medinfo.ui.screens.destinations.NewsScreenDestination
 import com.example.medinfo.ui.screens.startAppDestination
 import com.example.medinfo.ui.theme.textStyle11
 import com.ramcosta.composedestinations.navigation.navigate
-
 
 @Composable
 fun MedInfoBottomBar(navController: NavHostController) {
@@ -61,7 +45,10 @@ fun MedInfoBottomNavigation(
     currentDestination: Destination,
     content: @Composable RowScope.(BottomBarItem, Boolean) -> Unit
 ) {
-    BottomNavigation(backgroundColor = Color.White) {
+    BottomNavigation(
+        backgroundColor = Color.White,
+        elevation = 25.dp
+    ) {
         BottomBarItem.values().forEach {
             val isSelected = currentDestination == it.direction
             content(it, isSelected)

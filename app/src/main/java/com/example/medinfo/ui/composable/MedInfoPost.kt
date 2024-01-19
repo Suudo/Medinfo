@@ -1,6 +1,7 @@
 package com.example.medinfo.ui.composable
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,12 +38,14 @@ fun LazyListScope.PostListContent(
     headerTitle: String,
     fraction: Float,
     columns: Int,
+    isSeeAllButtonVisible: Boolean = true,
     onSeeAllClick: () -> Unit,
     content: @Composable (Post, Modifier) -> Unit
 ) {
     item {
         PostHeader(
             postTitle = headerTitle,
+            isSeeAllButtonVisible = isSeeAllButtonVisible,
             onSeeAllClick = { onSeeAllClick() },
             modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
         )
@@ -94,7 +97,8 @@ fun PostItem(
 fun PostHeader(
     modifier: Modifier = Modifier,
     postTitle: String,
-    onSeeAllClick: () -> Unit
+    isSeeAllButtonVisible: Boolean = true,
+    onSeeAllClick: () -> Unit = {}
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -106,19 +110,21 @@ fun PostHeader(
             style = textStyle16,
             color = Color(0xFF2D2E2B),
         )
-        Column(Modifier.clickable { onSeeAllClick() }) {
-            Text(
-                text = "ყველა",
-                color = Color(0xFF64665E),
-                style = textStyle12300
-            )
-            Spacer(
-                modifier = Modifier
-                    .padding(top = 2.dp)
-                    .height(0.5.dp)
-                    .width(41.dp)
-                    .background(Color(0xFF64665E))
-            )
+        AnimatedVisibility(visible = isSeeAllButtonVisible) {
+            Column(Modifier.clickable { onSeeAllClick() }) {
+                Text(
+                    text = "ყველა",
+                    color = Color(0xFF64665E),
+                    style = textStyle12300
+                )
+                Spacer(
+                    modifier = Modifier
+                        .padding(top = 2.dp)
+                        .height(0.5.dp)
+                        .width(41.dp)
+                        .background(Color(0xFF64665E))
+                )
+            }
         }
     }
 }
