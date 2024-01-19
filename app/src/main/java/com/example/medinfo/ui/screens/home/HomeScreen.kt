@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.medinfo.ui.NavigationAnimation
 import com.example.medinfo.ui.composable.PostItem
 import com.example.medinfo.ui.composable.PostListContent
 import com.example.medinfo.ui.composable.homePost
@@ -28,15 +29,18 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Destination(start = true)
+@Destination(
+    start = true,
+    style = NavigationAnimation::class
+)
 @Composable
 fun HomeScreen(navigator: DestinationsNavigator) {
     val viewModel: HomeViewModel = hiltViewModel()
 
     HomeContent(
-        navigateToNews = { navigator.navigate(NewsScreenDestination) },
-        navigateToArchive = { navigator.navigate(ArchiveScreenDestination) },
-        navigateToDetail = {  }
+        navigateToNews = { navigator.navigate(NewsScreenDestination, onlyIfResumed = false) },
+        navigateToArchive = { navigator.navigate(ArchiveScreenDestination, onlyIfResumed = true) },
+        navigateToDetail = { }
     )
 }
 
@@ -48,7 +52,7 @@ fun HomeContent(
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(homePadding).fillMaxSize()
+        contentPadding = homePadding
     ) {
         NewsList(
             news = newsList,
@@ -129,7 +133,7 @@ val archivesList = listOf(
     Post("სათაური8")
 )
 
-val homePadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 70.dp)
+val homePadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 70.dp, top = 16.dp)
 
 @Preview
 @Composable

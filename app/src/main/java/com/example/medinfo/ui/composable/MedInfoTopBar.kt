@@ -33,7 +33,7 @@ import com.example.medinfo.ui.theme.textStyle12300
 fun MedInfoTopBar() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
