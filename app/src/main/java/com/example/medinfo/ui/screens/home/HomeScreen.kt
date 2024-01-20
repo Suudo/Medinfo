@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.medinfo.ui.NavigationAnimation
+import com.example.medinfo.ui.animation.NavigationAnimation
 import com.example.medinfo.ui.composable.PostItem
 import com.example.medinfo.ui.composable.PostListContent
 import com.example.medinfo.ui.composable.homePost

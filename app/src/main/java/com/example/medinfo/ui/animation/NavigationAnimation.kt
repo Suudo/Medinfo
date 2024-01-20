@@ -1,4 +1,4 @@
-package com.example.medinfo.ui
+package com.example.medinfo.ui.animation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition
