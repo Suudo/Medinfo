@@ -28,17 +28,13 @@ fun MedInfoPagerIndicator(
     spacing: Dp = 2.dp,
     selectedMultiplier: Int = 3
 ) {
-    assert(
-        value = currentPage in 0 until totalPages,
-        lazyMessage = { "vot pizdec ;d" }
-    )
 
-    val rowWidth =
+    val fuckingRowWidth =
         (indicatorWidth * (selectedMultiplier + (totalPages - 1))) +
                 (spacing * (totalPages - 1))
 
     Row(
-        modifier = modifier.requiredWidth(rowWidth),
+        modifier = modifier.requiredWidth(fuckingRowWidth),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(spacing)
     ) {

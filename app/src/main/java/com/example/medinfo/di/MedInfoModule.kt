@@ -1,6 +1,9 @@
 package com.example.medinfo.di
 
-import com.example.medinfo.data.remote.MedInfoApi
+import com.example.medinfo.data.PostRepository
+import com.example.medinfo.data.remote.api.MedInfoApi
+import com.example.medinfo.domain.repository.PostRepositoryImpl
+import com.example.medinfo.domain.use_case.PostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +25,15 @@ object MedInfoModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create()
+
+    @Provides
+    @Singleton
+    fun providePostRepository(api: MedInfoApi): PostRepository {
+        return PostRepositoryImpl(api)
+    }
+
+    fun providePostUseCase(repository: PostRepository): PostUseCase {
+        return PostUseCase(repository)
+    }
+
 }

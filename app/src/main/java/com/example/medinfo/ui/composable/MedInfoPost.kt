@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,31 +30,36 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.medinfo.R
-import com.example.medinfo.ui.screens.home.Post
+import com.example.medinfo.domain.model.Post
 import com.example.medinfo.ui.theme.textStyle12300
 import com.example.medinfo.ui.theme.textStyle16
 
 fun LazyListScope.PostListContent(
     posts: List<Post>,
     headerTitle: String,
-    fraction: Float,
-    columns: Int,
+    postSizes: PostSize,
     isSeeAllButtonVisible: Boolean = true,
-    onSeeAllClick: () -> Unit,
-    content: @Composable (Post, Modifier) -> Unit
+    onSeeAllClick: () -> Unit = {},
+    content: @Composable (Post, Modifier, Dp, Dp, Dp) -> Unit
 ) {
     item {
         PostHeader(
             postTitle = headerTitle,
             isSeeAllButtonVisible = isSeeAllButtonVisible,
             onSeeAllClick = { onSeeAllClick() },
-            modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+            modifier = Modifier.padding(postHeaderPadding)
         )
     }
-    items(posts.windowed(columns, columns, true)) { items ->
+    items(posts.windowed(postSizes.columns, postSizes.columns, true)) { items ->
         Row(modifier = Modifier.fillMaxWidth()) {
             items.forEach {
-                content(it, Modifier.fillParentMaxWidth(fraction))
+                content(
+                    it,
+                    Modifier.fillParentMaxWidth(postSizes.fraction),
+                    postSizes.imageHeight,
+                    postSizes.footerHeight,
+                    postSizes.postHeight
+                )
             }
         }
     }
@@ -81,7 +87,7 @@ fun PostItem(
             modifier = footerModifier.align(Alignment.BottomCenter)
         ) {
             Text(
-                text = post.name,
+                text = post.title,
                 style = textStyle,
                 color = Color.White,
             )
@@ -129,8 +135,21 @@ fun PostHeader(
     }
 }
 
+enum class PostSize (
+    val fraction: Float,
+    val columns: Int,
+    val imageHeight: Dp,
+    val footerHeight: Dp,
+    val postHeight: Dp
+) {
+    NEWS(1f, 1, 152.dp, 48.dp, 200.dp),
+    ARCHIVES(.5f, 2, 76.dp, 32.dp, 100.dp)
+}
+
+val postHeaderPadding = PaddingValues(bottom = 8.dp, start = 8.dp, end = 8.dp)
+
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
-fun Modifier.homePost(height: Dp) =
+fun Modifier.postItemModifier(height: Dp) =
     padding(bottom = 16.dp)
         .height(height)
         .background(
@@ -141,7 +160,7 @@ fun Modifier.homePost(height: Dp) =
 
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
-fun Modifier.postImage(height: Dp) =
+fun Modifier.postImageModifier(height: Dp) =
     shadow(10.dp)
         .height(height)
         .fillMaxWidth()
@@ -151,7 +170,7 @@ fun Modifier.postImage(height: Dp) =
         )
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
-fun Modifier.postFooter(height: Dp) =
+fun Modifier.postFooterModifier(height: Dp) =
     shadow(
         elevation = 4.dp,
         spotColor = Color(0x4D000000),
