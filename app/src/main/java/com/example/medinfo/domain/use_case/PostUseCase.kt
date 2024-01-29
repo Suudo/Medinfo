@@ -1,14 +1,16 @@
 package com.example.medinfo.domain.use_case
 
-import com.example.medinfo.data.PostRepository
+import com.example.medinfo.data.repository.PostRepository
 import com.example.medinfo.data.Resource
 import com.example.medinfo.data.fetchResources
 import com.example.medinfo.domain.model.Post
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class PostUseCase(private val postRepository: PostRepository) {
-
+class PostUseCase @Inject constructor(
+    private val postRepository: PostRepository
+) {
     operator fun invoke(postType: PostType): Flow<Resource<List<Post>>> = flow {
         fetchResources(this) {
             when (postType) {

@@ -1,21 +1,42 @@
 package com.example.medinfo.domain.repository
 
-import com.example.medinfo.data.PostRepository
+import com.example.medinfo.data.repository.PostRepository
 import com.example.medinfo.data.remote.api.MedInfoApi
+import com.example.medinfo.data.remote.dto.PostDto
 import com.example.medinfo.domain.model.Post
 import com.example.medinfo.domain.model.toPost
+import javax.inject.Inject
 
-class PostRepositoryImpl(private val medInfoApi: MedInfoApi) : PostRepository {
+class PostRepositoryImpl @Inject constructor(
+    private val medInfoApi: MedInfoApi
+) : PostRepository {
 
-    override suspend fun getNews(): List<Post> =
-        medInfoApi.getNews().map { it.toPost() }
+    override suspend fun getNews() = news.map { it.toPost() }
+
+    override suspend fun getArchives() = archives.map { it.toPost() }
+
+    override suspend fun getSlider() = sliders.map { it.toPost() }
+
+    private val news = listOf(
+        PostDto(0, "news", "date", "", "decription"),
+        PostDto(1, "news", "date", "", "decription"),
+        PostDto(2, "news", "date", "", "decription"),
+        PostDto(3, "news", "date", "", "decription")
+    )
+
+    private val archives = listOf(
+        PostDto(0, "archives", "date", "", "decription"),
+        PostDto(1, "archives", "date", "", "decription"),
+        PostDto(2, "archives", "date", "", "decription"),
+        PostDto(3, "archives", "date", "", "decription")
+    )
 
 
-    override suspend fun getArchives(): List<Post> =
-        medInfoApi.getArchives().map { it.toPost() }
-
-
-    override suspend fun getSlider(): List<Post> =
-        medInfoApi.getSlider().map { it.toPost() }
+    private val sliders = listOf(
+        PostDto(0, "sliders", "date", "", "decription"),
+        PostDto(1, "sliders", "date", "", "decription"),
+        PostDto(2, "sliders", "date", "", "decription"),
+        PostDto(3, "sliders", "date", "", "decription")
+    )
 
 }

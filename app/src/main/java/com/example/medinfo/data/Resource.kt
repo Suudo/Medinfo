@@ -12,14 +12,11 @@ suspend inline fun <reified T> fetchResources(
         emitter.emit(Resource.Loading())
         val result = operation()
         emitter.emit(Resource.Success(result))
-    }
-    catch (e: IOException) {
+    } catch (e: IOException) {
         emitter.emit(Resource.Error(ErrorType.NoInternetConnection))
-    }
-    catch (e: HttpException) {
+    } catch (e: HttpException) {
         emitter.emit(Resource.Error(ErrorType.HTTP))
-    }
-    catch (e: NotFoundException) {
+    } catch (e: NotFoundException) {
         emitter.emit(Resource.Error(ErrorType.NotFound))
     }
 }
@@ -43,8 +40,6 @@ sealed class Resource<T>(val data: T? = null, val error: ErrorType? = null) {
     class Loading<T>(data: T? = null) : Resource<T>(data)
 }
 
-sealed class ErrorType {
-    object NoInternetConnection : ErrorType()
-    object NotFound : ErrorType()
-    object HTTP : ErrorType()
+enum class ErrorType {
+    NoInternetConnection, NotFound, HTTP
 }

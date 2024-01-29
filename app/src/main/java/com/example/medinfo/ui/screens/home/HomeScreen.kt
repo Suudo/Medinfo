@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.medinfo.R
 import com.example.medinfo.domain.model.Post
 import com.example.medinfo.ui.animation.NavigationAnimation
+import com.example.medinfo.ui.composable.MedInfoScroll
 import com.example.medinfo.ui.composable.PostItem
 import com.example.medinfo.ui.composable.PostListContent
 import com.example.medinfo.ui.composable.PostSize
@@ -23,6 +24,7 @@ import com.example.medinfo.ui.composable.postItemModifier
 import com.example.medinfo.ui.composable.postFooterModifier
 import com.example.medinfo.ui.composable.postImageModifier
 import com.example.medinfo.ui.screens.destinations.ArchiveScreenDestination
+import com.example.medinfo.ui.screens.destinations.DetailsBottomSheetDestination
 import com.example.medinfo.ui.screens.destinations.NewsScreenDestination
 import com.example.medinfo.ui.theme.textStyle11
 import com.example.medinfo.ui.theme.textStyle14
@@ -45,7 +47,7 @@ fun HomeScreen(navigator: DestinationsNavigator) {
             state = state,
             navigateToNews = { navigator.navigate(NewsScreenDestination) },
             navigateToArchive = { navigator.navigate(ArchiveScreenDestination) },
-            navigateToDetail = { }
+            navigateToDetail = { navigator.navigate(DetailsBottomSheetDestination) }
         )
 }
 
@@ -58,10 +60,7 @@ fun HomeContent(
 ) {
     val context = LocalContext.current
 
-    LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = homePadding
-    ) {
+    MedInfoScroll {
         NewsList(
             news = state.news!!,
             postTitle = context.getString(R.string.title_news),
@@ -88,9 +87,9 @@ fun LazyListScope.NewsList(
         headerTitle = postTitle,
         postSizes = PostSize.NEWS,
         onSeeAllClick = { onSeeAllClick() }
-    ) { item, modifier, imageHeight, footerHeight, postHeight ->
+    ) { post, modifier, imageHeight, footerHeight, postHeight ->
         PostItem(
-            post = item,
+            post = post,
             textStyle = textStyle14,
             onPostClick = { onClick() },
             imageModifier = Modifier.postImageModifier(imageHeight),
@@ -111,9 +110,9 @@ fun LazyListScope.ArchivesList(
         headerTitle = postTitle,
         postSizes = PostSize.ARCHIVES,
         onSeeAllClick = { onSeeAllClick() }
-    ) { item, modifier, imageHeight, footerHeight, postHeight ->
+    ) { post, modifier, imageHeight, footerHeight, postHeight ->
         PostItem(
-            post = item,
+            post = post,
             textStyle = textStyle11,
             onPostClick = { onClick() },
             imageModifier = Modifier.postImageModifier(imageHeight),
@@ -122,8 +121,6 @@ fun LazyListScope.ArchivesList(
         )
     }
 }
-
-val homePadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 70.dp, top = 16.dp)
 
 @Preview
 @Composable

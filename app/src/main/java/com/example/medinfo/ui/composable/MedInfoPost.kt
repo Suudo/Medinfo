@@ -1,7 +1,6 @@
 package com.example.medinfo.ui.composable
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,11 +49,11 @@ fun LazyListScope.PostListContent(
             modifier = Modifier.padding(postHeaderPadding)
         )
     }
-    items(posts.windowed(postSizes.columns, postSizes.columns, true)) { items ->
-        Row(modifier = Modifier.fillMaxWidth()) {
-            items.forEach {
+    items(posts.windowed(postSizes.columns, postSizes.columns, true)) {
+        Row(Modifier.fillMaxWidth()) {
+            it.forEach { post ->
                 content(
-                    it,
+                    post,
                     Modifier.fillParentMaxWidth(postSizes.fraction),
                     postSizes.imageHeight,
                     postSizes.footerHeight,
@@ -76,7 +75,7 @@ fun PostItem(
 ) {
     Box(modifier.clickable { onPostClick() }) {
         Image(
-            painter = painterResource(id = R.drawable.ic_post),
+            painter = painterResource(post.image),
             contentScale = ContentScale.FillBounds,
             contentDescription = "",
             modifier = imageModifier
@@ -116,26 +115,29 @@ fun PostHeader(
             style = textStyle16,
             color = Color(0xFF2D2E2B),
         )
-        AnimatedVisibility(visible = isSeeAllButtonVisible) {
-            Column(Modifier.clickable { onSeeAllClick() }) {
-                Text(
-                    text = "ყველა",
-                    color = Color(0xFF64665E),
-                    style = textStyle12300
-                )
-                Spacer(
-                    modifier = Modifier
-                        .padding(top = 2.dp)
-                        .height(0.5.dp)
-                        .width(41.dp)
-                        .background(Color(0xFF64665E))
-                )
-            }
-        }
+        if (isSeeAllButtonVisible) SeeAllContent { onSeeAllClick() }
     }
 }
 
-enum class PostSize (
+@Composable
+fun SeeAllContent(onSeeAllClick: () -> Unit) {
+    Column(Modifier.clickable { onSeeAllClick() }) {
+        Text(
+            text = "ყველა",
+            color = Color(0xFF64665E),
+            style = textStyle12300
+        )
+        Spacer(
+            modifier = Modifier
+                .padding(top = 2.dp)
+                .height(0.5.dp)
+                .width(41.dp)
+                .background(Color(0xFF64665E))
+        )
+    }
+}
+
+enum class PostSize(
     val fraction: Float,
     val columns: Int,
     val imageHeight: Dp,

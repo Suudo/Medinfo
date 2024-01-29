@@ -1,6 +1,6 @@
 package com.example.medinfo.di
 
-import com.example.medinfo.data.PostRepository
+import com.example.medinfo.data.repository.PostRepository
 import com.example.medinfo.data.remote.api.MedInfoApi
 import com.example.medinfo.domain.repository.PostRepositoryImpl
 import com.example.medinfo.domain.use_case.PostUseCase
@@ -21,7 +21,7 @@ object MedInfoModule {
     @Singleton
     fun provideRiftiumApi(): MedInfoApi =
         Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://github.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create()

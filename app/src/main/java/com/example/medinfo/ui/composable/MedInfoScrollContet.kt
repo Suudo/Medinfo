@@ -16,4 +16,4 @@ fun MedInfoScroll(content: LazyListScope. () -> Unit) {
     ) { content() }
 }
 
-val contentPadding = PaddingValues(top = 16.dp, bottom = 70.dp, start = 8.dp, end = 8.dp)
+val contentPadding = PaddingValues(top = 191.dp, bottom = 70.dp, start = 8.dp, end = 8.dp)

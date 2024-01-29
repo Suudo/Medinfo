@@ -25,6 +25,7 @@ import com.example.medinfo.ui.composable.PostSize
 import com.example.medinfo.ui.composable.postItemModifier
 import com.example.medinfo.ui.composable.postFooterModifier
 import com.example.medinfo.ui.composable.postImageModifier
+import com.example.medinfo.ui.screens.destinations.DetailsBottomSheetDestination
 import com.example.medinfo.ui.theme.textStyle14
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -39,7 +40,7 @@ fun NewsScreen(navigator: DestinationsNavigator) {
     state.news?.let {
         NewsContent(
             state = state,
-            navigateToDetail = {}
+            navigateToDetail = { navigator.navigate(DetailsBottomSheetDestination) }
         )
     }
 }

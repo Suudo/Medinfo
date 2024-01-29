@@ -21,20 +21,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.medinfo.R
+import com.example.medinfo.domain.model.Post
 import com.example.medinfo.ui.theme.textStyle14
 import com.example.medinfo.ui.theme.textStyle20
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MedInfoPagerWithIndicator(
-    items: List<HeaderInfo> = HeaderInfo.values().toList()
+    items: List<Post>?
 ) {
+
     val pagerState = rememberPagerState()
 
     LaunchedEffect(pagerState) {
@@ -42,25 +43,27 @@ fun MedInfoPagerWithIndicator(
             .collect { pagerState.animateScrollToPage(it) }
     }
 
-    Box {
-        HorizontalPager(
-            pageCount = items.size,
-            key = { it },
-            state = pagerState,
-            pageContent = { HeaderPagerItem(items[it]) }
-        )
-        MedInfoPagerIndicator(
-            totalPages = items.size,
-            currentPage = pagerState.currentPage,
-            modifier = Modifier.padding(bottom = 16.dp).align(Alignment.BottomCenter)
-        )
+    items?.let {
+        Box {
+            HorizontalPager(
+                pageCount = items.size,
+                key = { it },
+                state = pagerState,
+                pageContent = { HeaderPagerItem(items[it]) }
+            )
+            MedInfoPagerIndicator(
+                totalPages = items.size,
+                currentPage = pagerState.currentPage,
+                modifier = Modifier.padding(bottom = 16.dp).align(Alignment.BottomCenter)
+            )
+        }
     }
 }
 
 @Composable
-fun HeaderPagerItem(item: HeaderInfo) {
+fun HeaderPagerItem(item: Post) {
     Box {
-        HeaderImage(image = item.image)
+        HeaderImage(item.image)
         HeaderLabel(Modifier.padding(start = 16.dp, bottom = 40.dp))
     }
 }
@@ -68,7 +71,7 @@ fun HeaderPagerItem(item: HeaderInfo) {
 @Composable
 fun HeaderImage(image: Int) {
     Image(
-        painter = painterResource(id = image),
+        painter = painterResource(image),
         contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -119,15 +122,3 @@ fun Modifier.headerButton() =
             color = Color(0xFF028FF6),
             shape = RoundedCornerShape(6.dp)
         )
-
-enum class HeaderInfo(val image: Int) {
-    FIRST(R.drawable.ic_slider_1),
-    SECOND(R.drawable.ic_slider_1),
-    THIRD(R.drawable.ic_slider_1)
-}
-
-@Preview
-@Composable
-fun HeaderHorizontalPagerPreview() {
-    MedInfoPagerWithIndicator()
-}

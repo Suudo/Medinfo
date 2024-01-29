@@ -2,9 +2,7 @@ package com.example.medinfo.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.medinfo.data.ErrorType
-import com.example.medinfo.data.Resource
 import com.example.medinfo.data.handleResponse
 import com.example.medinfo.domain.model.Post
 import com.example.medinfo.domain.use_case.PostType
